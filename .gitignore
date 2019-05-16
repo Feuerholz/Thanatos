@@ -112,3 +112,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+.vs/VSWorkspaceState.json
+.vs/Thanatos/v15/.suo
+.vs/slnx.sqlite
+credentials.txt
