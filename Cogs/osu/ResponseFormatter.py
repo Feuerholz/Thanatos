@@ -1,4 +1,4 @@
-import osuApiAccessor as api
+import Cogs.osu.OsuApiAccessor as api
 import discord
 
 #returns a formatted text response for the discord server for a request about any users' most recent play(s)
