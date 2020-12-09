@@ -1,11 +1,8 @@
 import requests as req
-import Cogs.osu.Mode
+import Mode
 
 OSU_URL = 'http://osu.ppy.sh/api/'
-def setup():
-	with open ("osuapikey.txt", "r") as apifile:
-		global API_KEY
-		API_KEY= apifile.read().replace('\n', '')
+API_KEY = '7cda2489e2551239ba7d7a70bf854b1488f0fd46' #also externalize this you moron
 
 #osu! API doc can be found at https://github.com/ppy/osu-api/wiki
 
@@ -28,7 +25,3 @@ async def getUser(userID):
 async def getUserByName(username):
 	response = req.get(OSU_URL + 'get_user', params = {'k':API_KEY, 'u':username, 'type':"string"})
 	return response.json()[0]
-
-async def getUserTops(username):
-	response = req.get(OSU_URL + 'get_user_best', params = {'k':API_KEY, 'limit':100, 'u':username, 'type':"string"})
-	return response.json()
