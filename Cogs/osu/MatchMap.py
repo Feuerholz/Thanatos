@@ -1,6 +1,6 @@
-import PlayerScore
-import Team
-import Mode
+import Cogs.osu.PlayerScore
+import Cogs.osu.Team
+import Cogs.osu.Mode
 
 class MatchMap:
 
