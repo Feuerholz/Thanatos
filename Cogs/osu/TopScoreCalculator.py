@@ -1,8 +1,8 @@
-import osuApiAccessor as api
+import Cogs.osu.OsuApiAccessor as api
 
 
 async def calculatePP(user, play, newpp):
-    currentTotal = float((await api.getUserByName(user))["pp_raw"])
+    currentTotal = float((await osuApiAccessor.getUserByName(user))["pp_raw"])
     usertops = await api.getUserTops(user)
     usertopPP = []
     for pplay in usertops:

@@ -1,6 +1,6 @@
-import Match
-import Player
-import MatchMap
+import Cogs.osu.Match as Match
+import Cogs.osu.Player as Player
+import Cogs.osu.MatchMap as MatchMap
 from collections import OrderedDict
 
 
@@ -44,7 +44,11 @@ def calculateMatchRatings(match, warmups = 2, failedScoresCount = True, playBonu
                 players[uid].mapsPlayed+=1
                 if(failedScoresCount or score.passed):
                     players[score.playerID].actualScore+=score.score/totalscore
+    
+    #find the average amount of maps a player in this match has played, then multiply the rating by how many maps a player has played compared to average
+    avgPlayed = (nPlayers/len(players))*nMaps
     for id, player in players.items():
-        players[id].rating = (1.0+nPlayers*0.4*(player.actualScore-player.expectedScore)+player.mapsPlayed*playBonus)/max((0.25*pow(nMaps, 0.9)*playBonus*10), 1)
-            
+        #players[id].rating = (1.0+nPlayers*0.4*(player.actualScore-player.expectedScore)+player.mapsPlayed*playBonus)/max((0.25*pow(nMaps, 0.9)*playBonus*10), 1)
+        players[id].rating = (1.0+1.65*(player.actualScore-player.expectedScore))+((player.mapsPlayed/avgPlayed)-1)/1.9 
+        print (player.mapsPlayed/avgPlayed)
     return players

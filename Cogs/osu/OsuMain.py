@@ -10,7 +10,8 @@ from discord.ext import tasks, commands
 from itertools import chain
 import re
 
-class Osu(commands.cog):
+
+class OsuMain(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self._last_member = None
@@ -26,7 +27,7 @@ class Osu(commands.cog):
 
 
     @commands.command()
-    async def test(ctx, *, arg):
+    async def test(self, ctx, *, arg):
         await ctx.send(arg)
     #.rating <matchID> <params>
     #params:
@@ -35,10 +36,10 @@ class Osu(commands.cog):
     #   -w <integer> to specify number of warmups (default: 2)
     #   -b <number> to specify the bonus rating per played map (default: 0.1)
     @commands.command()
-    async def rating(context, *, message):
+    async def rating(self, context, *, message):
         msg = message.split(' ')
         for m in msg:
-            m = m.toLower()
+            m = m.lower()
         matchID = msg[0].split('/')[-1]
         ezmult=1.0
         failsCount=True
@@ -73,7 +74,7 @@ class Osu(commands.cog):
 
         for id, player in ratings.items():
             temp.append(player)
-        players=sorted(temp, key=getRating, reverse=True)
+        players=sorted(temp, key=self.getRating, reverse=True)
 
         if(match.teamType==0):
             for player in players:
@@ -141,10 +142,10 @@ class Osu(commands.cog):
     #   -ez <number> to specify a multiplier for EZ mod (default: 1)
     #   -f to count failed scores as 0 points
     @commands.command()
-    async def playercompare(context, *, message):
+    async def playercompare(self, context, *, message):
         msg = message.split(' ')
         for m in msg:
-            m = m.toLower()
+            m = m.lower()
         matchID1 = msg[0].split('/')[-1]
         matchID2 = msg[2].split('/')[-1]
         EZmult=1.0
@@ -167,9 +168,9 @@ class Osu(commands.cog):
         player2ID = (await api.getUserByName(msg[3]))["user_id"]
 
         if(matchID1==matchID2):
-            maps = findSameMaps(match1, None, player1ID, player2ID)
+            maps = self.findSameMaps(match1, None, player1ID, player2ID)
         else:
-            maps = findSameMaps(match1, match2, player1ID, player2ID)
+            maps = self.findSameMaps(match1, match2, player1ID, player2ID)
 
         embed=discord.Embed(title="Map score comparison between " + msg[1] + " and " + msg[3], color=0x707070)
         for map in maps:
@@ -189,7 +190,7 @@ class Osu(commands.cog):
     #   -ez <number> to specify a multiplier for EZ mod (default: 1)
     #   -f to count failed scores as 0 points
     @commands.command()
-    async def matchcompare(context, *, message):
+    async def matchcompare(self, context, *, message):
         msg = message.split(' ')
         matchID1 = msg[0].split('/')[-1]
         matchID2 = msg[2].split('/')[-1]
@@ -207,7 +208,7 @@ class Osu(commands.cog):
             pass
         match1=await MatchProcessor.processMatch(matchID1, EZmult, failsCount)
         match2=await MatchProcessor.processMatch(matchID2, EZmult, failsCount)
-        maps = findSameMaps(match1, match2)
+        maps = self.findSameMaps(match1, match2)
         if(msg[1]=='b1'):
             team1=1
             team1name = re.findall("\((.*?)\)", match1.name)[0]
@@ -255,7 +256,7 @@ class Osu(commands.cog):
     #   duplicates the #100 play for calculation purposes if the new pp values is lower than the players' current #100
     #   currently bugged and idk why
     @commands.command()
-    async def derank(context, *, message):
+    async def derank(self, context, *, message):
         msg = message.split()
         player = msg[0]
         play = int(msg[1])
@@ -273,7 +274,7 @@ class Osu(commands.cog):
     #   calcualates new pp total if the player got a play with the specified amount of pp
     #   currently bugged and idk why
     @commands.command()
-    async def newtop(context, *, message):
+    async def newtop(self, context, *, message):
         msg = message.split()
         player = msg[0]
         newpp = flot(msg[1])
@@ -285,11 +286,11 @@ class Osu(commands.cog):
     
         await context.send(embed=embed)
 
-    def getRating(player):
+    def getRating(self, player):
         return player.rating
 
     # find overlapping maps in two given matches and return the list of map IDs
-    def findSameMaps(match1, match2 = None, playerID1 = None, playerID2 = None):
+    def findSameMaps(self, match1, match2 = None, playerID1 = None, playerID2 = None):
         returnList = []
         if(match2 == None):
             for id, map in match1.maps.items():

@@ -1,8 +1,8 @@
-import osuApiAccessor as api
-import Match
-import MatchMap
-import PlayerScore
-import Player
+import Cogs.osu.OsuApiAccessor as api
+import Cogs.osu.Match as Match
+import Cogs.osu.MatchMap as MatchMap
+import Cogs.osu.PlayerScore as PlayerScore
+import Cogs.osu.Player as Player
 from collections import OrderedDict
 
 

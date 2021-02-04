@@ -1,4 +1,4 @@
-import Team
+import Cogs.osu.Team as Team
 
 class PlayerScore:
 
