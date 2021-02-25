@@ -18,7 +18,6 @@ async def on_ready():
     print("successfully loaded osu! Cog")
     bot.add_cog(Cogs.vndb.VndbMain.VndbMain(bot))
     print("successfully loaded VNDB Cog")
-    Cogs.vndb.VndbApiAccessor.login()
 
 
 
