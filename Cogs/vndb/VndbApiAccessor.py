@@ -20,6 +20,15 @@ def login():
     logindata = {"protocol":1,"client":"Thanatos","clientver":1.0,"username": user,"password":pw}
     loginstring = "login " + json.dumps(logindata) + "\x04"
     print(loginstring)
+    ssock.send(bytes(loginstring, "utf-8"))
+    response=ssock.recv(4096)
+    print(response)
+    closeConnection()
 
 def closeConnection():
-    ssock.close()
+    try:
+        ssock.shutdown(socket.SHUT_RDWR)
+        ssock.close()
+        print ("socket closed successfully")
+    except Exception as e:
+        print("closing socket failed, error: {0}".format(e))

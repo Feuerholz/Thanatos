@@ -1,6 +1,8 @@
 import Cogs.osu
 import Cogs.osu.OsuApiAccessor as api
 from Cogs.osu.OsuMain import OsuMain
+from Cogs.vndb.VndbMain import VndbMain
+import Cogs.vndb.VndbApiAccessor
 from collections import OrderedDict
 from discord.ext import tasks, commands
 from itertools import chain
@@ -14,7 +16,10 @@ credentials=open("credentials.txt", "r")    #file containing the discord authent
 async def on_ready():
     print('logged in as {0.user}'.format(bot))
     bot.add_cog(Cogs.osu.OsuMain.OsuMain(bot))
-    print("successfully loaded Osu Cog")
+    print("successfully loaded osu! Cog")
+    bot.add_cog(Cogs.vndb.VndbMain.VndbMain(bot))
+    print("successfully loaded VNDB Cog")
+    Cogs.vndb.VndbApiAccessor.login()
 
 
 
