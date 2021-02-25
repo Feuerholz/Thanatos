@@ -13,6 +13,7 @@ import re
 
 class OsuMain(commands.Cog):
     def __init__(self, bot):
+        api.setup()
         self.bot = bot
         self._last_member = None
 

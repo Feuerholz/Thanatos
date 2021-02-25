@@ -8,7 +8,6 @@ from discord.ext import tasks, commands
 from itertools import chain
 import re
 
-api.setup()
 bot = commands.Bot(command_prefix='.')
 credentials=open("credentials.txt", "r")    #file containing the discord authentication token
 
