@@ -23,7 +23,13 @@ class VisualNovel():
     votecount = None
     screens = None
     staff = None
-
+    lengthstrings = {
+        1: "<2 hours",
+        2: "2-10 hours",
+        3: "10-30 hours",
+        4: "30-50 hours",
+        5: "<50 hours",
+        }
 
 
     def __init__(self, dict):
@@ -31,3 +37,23 @@ class VisualNovel():
             if dict [key] is not None:
                 setattr(self, key, dict[key])
 
+    def lengthAsString(self):
+        return self.lengthstrings.get(self.length, "unknown")
+
+    def formattedLanguages(self):
+        if (self.orig_lang[0] is None):
+            return "none"
+        langstring = "**{0}**".format(self.orig_lang[0])
+        for lang in self.languages:
+            if(lang==self.orig_lang[0]):
+                continue
+            langstring += ", {0}".format(lang)
+        return langstring
+
+    def formattedPlatforms(self):
+        if (self.platforms is None):
+            return "none"
+        platstring = self.platforms[0]
+        for platform in self.platforms[1:]:
+            platstring += ", {0}".format(platform)
+        return platstring
