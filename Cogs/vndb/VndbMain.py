@@ -3,6 +3,7 @@ from discord.ext import tasks, commands
 import Cogs.vndb.VndbApiAccessor as api
 from Cogs.vndb.VisualNovel import VisualNovel as vn
 import json
+import logging
 
 class VndbMain(commands.Cog):
     def __init__(self, bot):
@@ -10,11 +11,11 @@ class VndbMain(commands.Cog):
             self.bot = bot
             self._last_member = None
         except Exception as e:
-            print("Error intitializing VNDB Cog: {0}".format(e))
+            logging.error("Error intitializing VNDB Cog: {0}".format(e))
         try:
           api.login()
         except Exception as e:
-            print("Error logging into VNDB API: {0}".format(e))
+            logging.error("Error logging into VNDB API: {0}".format(e))
 
     #.vn [name|id]
     #   looks up a vn either by name or id in vndb (assumes id if positive integer, name otherwise)
@@ -27,10 +28,8 @@ class VndbMain(commands.Cog):
                 rawresponse = api.requestVnData(id = message)
             else:
                 rawresponse = api.requestVnData(title = message)
-
-            print(rawresponse)
             responsedict = json.loads(rawresponse)
-            print("Query complete, number of results: {0}".format(len(responsedict["items"])))
+            logging.info("Query complete, number of results: {0}".format(len(responsedict["items"])))
             firstresult = responsedict["items"][0]
             vnresult = vn(firstresult)
 
@@ -64,16 +63,9 @@ class VndbMain(commands.Cog):
             embed.add_field(name='\u200b', value='\u200b')
 
             await context.send(embed=embed)
+            logging.info("Embed for VN {0} sent successfully".format(vnresult.id))
 
         except Exception as e:
-            print("error finding vn, error: {0}".format(e))
+            logging.error("error finding vn, error: {0}".format(e))
 
-
-def testVN():
-    rawresponse = api.requestVnData(67)
-    responsejson = json.loads(rawresponse)
-    print("what if it dies")
-    firstlistitem = responsejson["items"][0]
-    testvn = vn(firstlistitem)
-    print(testvn.title)
 

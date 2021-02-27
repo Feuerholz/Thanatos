@@ -7,17 +7,24 @@ from collections import OrderedDict
 from discord.ext import tasks, commands
 from itertools import chain
 import re
+import logging
 
 bot = commands.Bot(command_prefix='.')
 credentials=open("credentials.txt", "r")    #file containing the discord authentication token
 
+
 @bot.event
 async def on_ready():
-    print('logged in as {0.user}'.format(bot))
+    logger=logging.getLogger()
+    logger.setLevel(logging.DEBUG)
+    outputFileHandler = logging.FileHandler("Thanatos.log")
+    consoleHandler = logging.StreamHandler(sys.stdout)
+
+    logging.info('logged in as {0.user}'.format(bot))
     bot.add_cog(Cogs.osu.OsuMain.OsuMain(bot))
-    print("successfully loaded osu! Cog")
+    logging.info("successfully loaded osu! Cog")
     bot.add_cog(Cogs.vndb.VndbMain.VndbMain(bot))
-    print("successfully loaded VNDB Cog")
+    logging.info("successfully loaded VNDB Cog")
 
 
 
