@@ -9,7 +9,8 @@ from collections import OrderedDict
 from discord.ext import tasks, commands
 from itertools import chain
 import re
-
+import logging
+logger = logging.getLogger()
 
 class OsuMain(commands.Cog):
     def __init__(self, bot):

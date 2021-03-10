@@ -2,7 +2,7 @@ import socket
 import ssl
 import json
 import logging
-
+logger = logging.getLogger()
 hostname="api.vndb.org"
 port="19535"
 context = ssl.create_default_context()
@@ -22,17 +22,17 @@ def login():
         loginstring = "login " + json.dumps(logindata) + "\x04"
         ssock.send(bytes(loginstring, "utf-8"))
         response=ssock.recv(4096)
-        logging.info("login response: {0}".format(response))
+        logger.info("login response: {0}".format(response))
     except Exception as e:
-        logging.error("error logging in: {0}".format(e))
+        logger.error("error logging in: {0}".format(e))
 
 def closeConnection():
     try:
         ssock.shutdown(socket.SHUT_RDWR)
         ssock.close()
-        logging.info("socket closed successfully")
+        logger.info("socket closed successfully")
     except Exception as e:
-        logging.error("closing socket failed: {0}".format(e))
+        logger.error("closing socket failed: {0}".format(e))
 
 
 def requestVnData(id = None, title = None, flags = "basic,details,stats"):
@@ -46,7 +46,7 @@ def requestVnData(id = None, title = None, flags = "basic,details,stats"):
             return None
         ssock.send(bytes(requeststring,"utf-8"))
         response=ssock.recv(65536)
-        logging.info("VN Data for query \"{0}\" requested successfully, response: {1}".format(requeststring, response))
+        logger.info("VN Data for query \"{0}\" requested successfully, response: {1}".format(requeststring, response))
         return response[8:-1]     #API response includes string in front of the JSON object, remove that as well as the trailing \x04
     except Exception as e:
-        logging.error("Requesting VN failed: {0}".format(e))
+        logger.error("Requesting VN failed: {0}".format(e))
